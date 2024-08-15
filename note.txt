@@ -1,0 +1,26 @@
+MERN
+
+//Backend
+mongo
+express
+node
+
+//Frontend
+react
+
+create backend folder
+create server.js
+npm i express
+npm i dotenv
+npm i morgan
+
+MVC Pattern create
+1. routes
+2. controllers
+
+connect mongoDB Setup
+npm i mongoose
+build schema
+
+
+create frontend folder

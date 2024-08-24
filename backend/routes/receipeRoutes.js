@@ -3,9 +3,10 @@ const router = express.Router();
 const ReceipeController = require("../controllers/ReceipeController");
 const { body } = require('express-validator');
 const handleErrorMsg = require('../middlewares/handleErrorMsg');
+const AuthMiddleware = require('../middlewares/authMiddleware');
 
 
-router.get('', ReceipeController.index);
+router.get('', AuthMiddleware, ReceipeController.index);
 
 router.post('', [
     body('title').notEmpty().withMessage("Title is required"),

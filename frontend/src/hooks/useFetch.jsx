@@ -1,50 +1,44 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../helpers/axios";
 
 const useFetch = (url) => {
-    let [data, setData] = useState([]);
-    let [loading, setLoading] = useState(false);
-    let [error, setError] = useState(null);
-    let navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        let abortController = new AbortController();
-        let signal = abortController.signal;
+  useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
 
-        setLoading(true);
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': "Bearer " + localStorage.getItem('token')
-            },
-            signal
-        })
-            .then(res => {
-                if (!res.ok) {
-                    throw Error("Something Went Wrong!");
-                }
-                return res.json();
-            })
-            .then(data => {
-                setData(data);
-                setLoading(false);
-            })
-            .catch(e => {
-                setError(e.message);
-                setLoading(false);
-                // navigate('/login');
-            });
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(url, { signal });
+        if (res.status === 200) {
+          setData(res.data); // Use res.data to access the actual data
+        }
+      } catch (e) {
+        if (e.name === "AbortError") {
+          console.log("fetch aborted");
+        } else {
+          setError(e);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        // Cleanup function
-        return () => {
-            abortController.abort();
-        };
+    fetchData();
 
-    }, [url]);
+    // Cleanup function
+    return () => {
+      abortController.abort();
+    };
+  }, [url, navigate]); // Added navigate to dependencies in case it's used
 
-    return { data, loading, error };
-}
+  return { data, loading, error };
+};
 
 export default useFetch;

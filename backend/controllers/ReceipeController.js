@@ -1,6 +1,6 @@
 const Receipe = require("../models/Receipe");
 const mongoose = require("mongoose");
-const paginate = require("../services/Paginate");
+const paginate = require("../helpers/Paginate");
 
 const ReceipeController = {
     index : async (req,res) => {

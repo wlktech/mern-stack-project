@@ -8,7 +8,7 @@ export default function Pagination({links}) {
     let pages = links.loopableLinks;
     let next = links.next;
     let prev = links.prev;
-    console.log(links);
+    // console.log(links);
     
 
     useEffect(() => {

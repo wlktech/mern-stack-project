@@ -6,6 +6,8 @@ const authRoutes = require('./routes/authRoutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const AuthMiddleware = require('./middlewares/authMiddleware');
+const multer = require('multer');
 // const AuthMiddleware = require('./middlewares/authMiddleware');
 
 const app = express();
@@ -16,6 +18,7 @@ app.use(cors(
     }
 )); //local development only for now --- to remove in production level
 app.use(express.json());
+app.use(express.static('public'));
 
 
 
@@ -41,6 +44,6 @@ app.get('/set-cookies', (req, res) => {
 });
 
 app.use('/api', authRoutes);
-app.use('/api/receipes', receipeRoutes);
+app.use('/api/receipes', AuthMiddleware, receipeRoutes);
 
 

@@ -82,6 +82,11 @@ const ReceipeController = {
         }catch(err){
             res.status(500).json({msg: "Internal Server Error."});
         }
+    }, 
+    upload : async (req,res) => {
+        console.log(req.file);
+        
+        return res.json({msg: "Upload receipe."});
     }
 }
 
